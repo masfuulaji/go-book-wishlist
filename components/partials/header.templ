@@ -1,0 +1,22 @@
+package partials
+
+templ Header() {
+	<!-- Header -->
+	<header id="header">
+		<h1 class="fs-5 fw-bold"><a href="/">Future Imperfect</a></h1>
+		<div class="mx-5" style="width: 100%;">
+			<h1 class="fs-6 d-inline"><a href="/">Home</a></h1>
+			<h1 class="fs-6 d-inline"><a href="/category">Category</a></h1>
+		</div>
+		<nav class="main">
+			<ul>
+				<li class="search">
+					<a class="fa-search" href="#search">Search</a>
+					<form id="search" method="get" action="#">
+						<input type="text" name="query" placeholder="Search"/>
+					</form>
+				</li>
+			</ul>
+		</nav>
+	</header>
+}

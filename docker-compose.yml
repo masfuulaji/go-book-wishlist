@@ -1,0 +1,11 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-book-wishlist
+    ports:
+      - 1323:1323
+    volumes:
+      - .:/app
