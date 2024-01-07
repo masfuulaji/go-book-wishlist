@@ -15,15 +15,15 @@ type CategoryRepository interface {
 	DeleteCategory(id string) error
 }
 
-type categoryRepositoryImpl struct {
+type CategoryRepositoryImpl struct {
 	db *sqlx.DB
 }
 
-func NewCategoryRepository(db *sqlx.DB) *categoryRepositoryImpl {
-	return &categoryRepositoryImpl{db: db}
+func NewCategoryRepository(db *sqlx.DB) *CategoryRepositoryImpl {
+	return &CategoryRepositoryImpl{db: db}
 }
 
-func (cr *categoryRepositoryImpl) CreateCategory(category *models.Category) error {
+func (cr *CategoryRepositoryImpl) CreateCategory(category *models.Category) error {
 	query := "INSERT INTO categories (name, description) VALUES ($1, $2)"
 
 	_, err := cr.db.Exec(query, category.Name, category.Description)
@@ -34,7 +34,7 @@ func (cr *categoryRepositoryImpl) CreateCategory(category *models.Category) erro
 	return nil
 }
 
-func (cr *categoryRepositoryImpl) GetCategories() ([]models.Category, error) {
+func (cr *CategoryRepositoryImpl) GetCategories() ([]models.Category, error) {
 	query := "SELECT * FROM categories"
 
 	var categories []models.Category
@@ -46,7 +46,7 @@ func (cr *categoryRepositoryImpl) GetCategories() ([]models.Category, error) {
 	return categories, nil
 }
 
-func (cr *categoryRepositoryImpl) GetCategory(id string) (models.Category, error) {
+func (cr *CategoryRepositoryImpl) GetCategory(id string) (models.Category, error) {
 	query := "SELECT * FROM categories WHERE id = $1"
 
 	var category models.Category
@@ -58,7 +58,7 @@ func (cr *categoryRepositoryImpl) GetCategory(id string) (models.Category, error
 	return category, nil
 }
 
-func (cr *categoryRepositoryImpl) UpdateCategory(id string, category *models.Category) error {
+func (cr *CategoryRepositoryImpl) UpdateCategory(id string, category *models.Category) error {
 	query := "UPDATE categories SET name = $1, description = $2 WHERE id = $3"
 
 	_, err := cr.db.Exec(query, category.Name, category.Description, id)
@@ -69,7 +69,7 @@ func (cr *categoryRepositoryImpl) UpdateCategory(id string, category *models.Cat
 	return nil
 }
 
-func (cr *categoryRepositoryImpl) DeleteCategory(id string) error {
+func (cr *CategoryRepositoryImpl) DeleteCategory(id string) error {
 	query := "DELETE FROM categories WHERE id = $1"
 
 	_, err := cr.db.Exec(query, id)

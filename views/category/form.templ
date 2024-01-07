@@ -1,21 +1,27 @@
 package category
 
 import "github.com/masfuulaji/go-book-wishlist/components"
+import "github.com/masfuulaji/go-book-wishlist/internal/app/response"
+import "strconv"
 
-templ Form() {
+templ Form(data response.CategoryResponse) {
 	@components.Layout() {
 		<div class="m-5 p-3">
 			<h1 class="fs-5 fw-bold">Category</h1>
 			<div class="card p-4">
-				<form>
+				<form action="/category" method="post">
+					if data.ID != 0 {
+						<input type="hidden" name="id" value={ strconv.Itoa(data.ID) }/>
+					} else {
+						<input type="hidden" name="id" value=""/>
+					}
 					<div class="mb-3">
-						<label for="exampleInputEmail1" class="form-label">Email address</label>
-						<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
-						<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+						<label for="name" class="form-label">Name</label>
+						<input type="text" class="form-control" id="name" name="name" value={ data.Name }/>
 					</div>
 					<div class="mb-3">
-						<label for="exampleInputPassword1" class="form-label">Password</label>
-						<input type="password" class="form-control" id="exampleInputPassword1"/>
+						<label for="description" class="form-label">Description</label>
+						<input type="text" class="form-control" id="description" name="description" value={ data.Description }/>
 					</div>
 					<a href="/category" class="btn btn-secondary">Cancel</a>
 					<button type="submit" class="btn btn-primary">Submit</button>

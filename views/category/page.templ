@@ -1,19 +1,28 @@
 package category
 
 import "github.com/masfuulaji/go-book-wishlist/components"
+import "github.com/masfuulaji/go-book-wishlist/internal/app/response"
+import "path"
+import "strconv"
 
-templ Category() {
+templ Category(data []response.CategoryResponse) {
 	@components.Layout() {
 		<div class="m-5 p-3">
 			<h1 class="fs-5 fw-bold">Category</h1>
 			<a href="category/new" class="btn btn-primary mb-2 text-white">New</a>
-			<div class="card">
-				<h5 class="card-header">Title</h5>
-				<div class="card-body">
-					<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-					<a href="category/edit/1" class="btn btn-success">Edit</a>
-					<a href="#" class="btn btn-danger">Delete</a>
-				</div>
+			<div class="row">
+				for _, item := range data {
+					<div class="col-6 mb-4">
+						<div class="card">
+							<h5 class="card-header">{ item.Name }</h5>
+							<div class="card-body">
+								<p class="card-text">{ item.Description }</p>
+								<a href={ templ.SafeURL(path.Join("category/edit/", strconv.Itoa(item.ID))) } class="btn btn-success">Edit</a>
+								<a href={ templ.SafeURL(path.Join("category/delete/", strconv.Itoa(item.ID))) } class="btn btn-danger">Delete</a>
+							</div>
+						</div>
+					</div>
+				}
 			</div>
 		</div>
 	}
