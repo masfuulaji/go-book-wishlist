@@ -1,0 +1,14 @@
+package director
+
+import "github.com/masfuulaji/go-book-wishlist/components"
+import "github.com/masfuulaji/go-book-wishlist/internal/app/response"
+
+templ Director(data []response.DirectorResponse) {
+	@components.Layout() {
+		<div class="m-5 p-3">
+			<h1 class="fs-5 fw-bold">Director</h1>
+			<a href="director/new" class="btn btn-primary mb-2 text-white">New</a>
+			<div class="row"></div>
+		</div>
+	}
+}

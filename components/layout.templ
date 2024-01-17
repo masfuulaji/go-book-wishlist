@@ -6,7 +6,7 @@ import "github.com/spf13/viper"
 templ Layout() {
 	<html>
 		<head>
-			<title>Future Imperfect by HTML5 UP</title>
+			<title>Movie</title>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
 			<link rel="stylesheet" href={ viper.GetString("base_url") + "/assets/css/main.css" }/>
@@ -27,6 +27,7 @@ templ Layout() {
 			<script src={ viper.GetString("base_url") + "/assets/js/breakpoints.min.js" }></script>
 			<script src={ viper.GetString("base_url") + "/assets/js/util.js" }></script>
 			<script src={ viper.GetString("base_url") + "/assets/js/main.js" }></script>
+			<script src={ viper.GetString("base_url") + "/assets/js/htmx.js" }></script>
 		</body>
 	</html>
 }
