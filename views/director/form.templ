@@ -1,0 +1,33 @@
+package director
+
+import "github.com/masfuulaji/go-book-wishlist/internal/app/response"
+import "strconv"
+
+templ Form(data response.DirectorResponse) {
+	<div class="m-5 p-3">
+		<h1 class="fs-5 fw-bold">Director</h1>
+		<div class="card p-4">
+			<form hx-post="director" hx-target="#main" hx-swap="innerHTML">
+				if data.ID != 0 {
+					<input type="hidden" name="id" value={ strconv.Itoa(data.ID) }/>
+				} else {
+					<input type="hidden" name="id" value=""/>
+				}
+				<div class="mb-3">
+					<label for="name" class="form-label">Name</label>
+					<input type="text" class="form-control" id="name" name="name" value={ data.Name }/>
+				</div>
+				<div class="mb-3">
+					<label for="birthday" class="form-label">Birthday</label>
+					<input type="text" class="form-control" id="birthday" name="birthday" value={ data.Birthday.Format("02-01-2006") }/>
+				</div>
+				<div class="mb-3">
+					<label for="place_of_birth" class="form-label">Place of Birth</label>
+					<input type="text" class="form-control" id="place_of_birth" name="place_of_birth" value={ data.PlaceOfBirth }/>
+				</div>
+				<button hx-get="/director" hx-target="#main" hx-swap="innerHTML" class="btn btn-secondary">Cancel</button>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
+}

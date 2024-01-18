@@ -7,7 +7,7 @@ templ Header() {
 		<div class="mx-5" style="width: 100%;">
 			<h1 class="fs-6 d-inline"><a href="/">Home</a></h1>
 			<h1 class="fs-6 d-inline"><a href="/category">Category</a></h1>
-			<h1 class="fs-6 d-inline"><a href="/director">Director</a></h1>
+			<h1 class="fs-6 d-inline"><a hx-get="/director" hx-target="#main" hx-swap="innerHTML" hx-trigger="click" style="cursor: pointer;">Director</a></h1>
 		</div>
 		<nav class="main">
 			<ul>

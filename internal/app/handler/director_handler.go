@@ -61,15 +61,11 @@ func (h *directorHandlerImpl) EditDirector(c echo.Context) error {
 	res.Name = data.Name
 	res.Birthday = data.Birthday
 	res.PlaceOfBirth = data.PlaceOfBirth
-	// return director.Form(res).Render(c.Request().Context(), c.Response())
-
-	return c.JSON(http.StatusOK, "Test Edit")
+	return director.Form(res).Render(c.Request().Context(), c.Response())
 }
 
 func (h *directorHandlerImpl) NewDirector(c echo.Context) error {
-	// return director.Form(response.DirectorResponse{}).Render(c.Request().Context(), c.Response())
-
-	return c.JSON(http.StatusOK, "Test New")
+	return director.Form(response.DirectorResponse{}).Render(c.Request().Context(), c.Response())
 }
 
 func (h *directorHandlerImpl) StoreDirector(c echo.Context) error {
@@ -111,8 +107,16 @@ func (h *directorHandlerImpl) StoreDirector(c echo.Context) error {
 		}
 	}
 
-	return c.Redirect(http.StatusFound, "/category")
+	return c.Redirect(http.StatusFound, "/director")
 }
 
 func (h *directorHandlerImpl) DeleteDirector(c echo.Context) error {
-  id := c.Param("id")
+	id := c.Param("id")
+
+	err := h.DirectorRepository.DeleteDirector(id)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.Redirect(http.StatusFound, "/director")
+}
