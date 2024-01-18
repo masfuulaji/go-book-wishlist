@@ -1,0 +1,6 @@
+# script to create migrations
+migrate create -ext sql -dir db/migrations -seq create_users_table
+
+# script to run migrations
+migrate -database "postgres://postgres:postgres@localhost:5442/movie_wishlist?sslmode=disable" -path migrations up
+migrate -database "postgres://postgres:postgres@localhost:5442/movie_wishlist?sslmode=disable" -path migrations down

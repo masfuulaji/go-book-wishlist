@@ -6,11 +6,14 @@ import (
 	"github.com/lib/pq"
 )
 
-type Category struct {
+type Movie struct {
 	CreatedAt   time.Time   `db:"created_at"`
 	UpdatedAt   time.Time   `db:"updated_at"`
 	DeletedAt   pq.NullTime `db:"deleted_at"`
-	Name        string
+	Title       string
 	Description string
+	Year        string
+	DirectorID  int `db:"director_id"`
 	ID          int
+	Rating      float32
 }

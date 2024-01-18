@@ -1,0 +1,25 @@
+package movie
+
+import "github.com/masfuulaji/go-book-wishlist/internal/app/response"
+import "strconv"
+
+templ Movie(data []response.MovieResponse) {
+	<div class="m-5 p-3">
+		<h1 class="fs-5 fw-bold">Movie</h1>
+		<button hx-get="movie/new" hx-target="#content-div" hx-swap="innerHTML" class="btn btn-primary mb-2 text-white">New</button>
+		<div class="row" id="content-div">
+			for _, item := range data {
+				<div class="col-6 mb-4">
+					<div class="card">
+						<h5 class="card-header">{ item.Title }</h5>
+						<div class="card-body">
+							<p class="card-text">{ item.Year }</p>
+							<button hx-get={ "movei/edit/" + strconv.Itoa(item.ID) } hx-target="#content-div" hx-swap="innerHTML" class="btn btn-success">Edit</button>
+							<a hx-get={ "movie/delete/" + strconv.Itoa(item.ID) } hx-target="#main" hx-swap="innerHTML" class="btn btn-danger">Delete</a>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+}

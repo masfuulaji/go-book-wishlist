@@ -1,11 +1,12 @@
 package repositories
 
 import (
+	"time"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/masfuulaji/go-book-wishlist/internal/app/models"
+	"github.com/masfuulaji/go-book-wishlist/internal/app/request"
 )
-
-var category models.Category
 
 type CategoryRepository interface {
 	CreateCategory(category *models.Category) error
@@ -23,10 +24,12 @@ func NewCategoryRepository(db *sqlx.DB) *CategoryRepositoryImpl {
 	return &CategoryRepositoryImpl{db: db}
 }
 
-func (cr *CategoryRepositoryImpl) CreateCategory(category *models.Category) error {
-	query := "INSERT INTO categories (name, description) VALUES ($1, $2)"
+func (cr *CategoryRepositoryImpl) CreateCategory(category *request.CategoryRequest) error {
+	query := "INSERT INTO categories (name, description, created_at, updated_at) VALUES ($1, $2)"
+	createdAt := time.Now().Format("2006-01-02 15:04:05")
+	updatedAt := time.Now().Format("2006-01-02 15:04:05")
 
-	_, err := cr.db.Exec(query, category.Name, category.Description)
+	_, err := cr.db.Exec(query, category.Name, category.Description, createdAt, updatedAt)
 	if err != nil {
 		return err
 	}
@@ -35,7 +38,7 @@ func (cr *CategoryRepositoryImpl) CreateCategory(category *models.Category) erro
 }
 
 func (cr *CategoryRepositoryImpl) GetCategories() ([]models.Category, error) {
-	query := "SELECT * FROM categories"
+	query := "SELECT * FROM categories where deleted_at is null"
 
 	var categories []models.Category
 	err := cr.db.Select(&categories, query)
@@ -58,10 +61,11 @@ func (cr *CategoryRepositoryImpl) GetCategory(id string) (models.Category, error
 	return category, nil
 }
 
-func (cr *CategoryRepositoryImpl) UpdateCategory(id string, category *models.Category) error {
-	query := "UPDATE categories SET name = $1, description = $2 WHERE id = $3"
+func (cr *CategoryRepositoryImpl) UpdateCategory(id string, category *request.CategoryRequest) error {
+	query := "UPDATE categories SET name = $1, description = $2, updated_at = $3 WHERE id = $3"
+	updatedAt := time.Now().Format("2006-01-02 15:04:05")
 
-	_, err := cr.db.Exec(query, category.Name, category.Description, id)
+	_, err := cr.db.Exec(query, category.Name, category.Description, updatedAt, id)
 	if err != nil {
 		return err
 	}
@@ -70,9 +74,10 @@ func (cr *CategoryRepositoryImpl) UpdateCategory(id string, category *models.Cat
 }
 
 func (cr *CategoryRepositoryImpl) DeleteCategory(id string) error {
-	query := "DELETE FROM categories WHERE id = $1"
+	query := "UPDATE categories SET deleted_at = $1 WHERE id = $2"
+	deletedAt := time.Now().Format("2006-01-02 15:04:05")
 
-	_, err := cr.db.Exec(query, id)
+	_, err := cr.db.Exec(query, deletedAt, id)
 	if err != nil {
 		return err
 	}

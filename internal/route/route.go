@@ -33,4 +33,11 @@ func SetupRoutes(e *echo.Echo) {
 	e.GET("/director/edit/:id", directorHandler.EditDirector)
 	e.GET("/director/new", directorHandler.NewDirector)
 	e.POST("/director", directorHandler.StoreDirector)
+
+	movieHandler := handler.NewMovieHandler(db.DB)
+	e.GET("/movie/delete/:id", movieHandler.DeleteMovie)
+	e.GET("/movie", movieHandler.PageMovie)
+	e.GET("/movie/edit/:id", movieHandler.EditMovie)
+	e.GET("/movie/new", movieHandler.NewMovie)
+	e.POST("/movie", movieHandler.StoreMovie)
 }

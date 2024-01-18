@@ -6,8 +6,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
-	"github.com/masfuulaji/go-book-wishlist/internal/app/models"
 	"github.com/masfuulaji/go-book-wishlist/internal/app/repositories"
+	"github.com/masfuulaji/go-book-wishlist/internal/app/request"
 	"github.com/masfuulaji/go-book-wishlist/internal/app/response"
 	"github.com/masfuulaji/go-book-wishlist/views/category"
 )
@@ -81,7 +81,7 @@ func (h *categoryHandlerImpl) StoreCategory(c echo.Context) error {
 			return c.String(http.StatusNotFound, err.Error())
 		}
 	}
-	category := &models.Category{
+	category := &request.CategoryRequest{
 		ID:          intID,
 		Name:        name,
 		Description: description,

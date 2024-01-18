@@ -5,8 +5,9 @@ templ Header() {
 	<header id="header">
 		<h1 class="fs-5 fw-bold"><a href="/">Movie</a></h1>
 		<div class="mx-5" style="width: 100%;">
-			<h1 class="fs-6 d-inline"><a href="/">Home</a></h1>
-			<h1 class="fs-6 d-inline"><a href="/category">Category</a></h1>
+			<h1 class="fs-6 d-inline"><a hx-get="/" hx-target="#main" hx-swap="innerHTML" hx-trigger="click" style="cursor: pointer;">Home</a></h1>
+			<h1 class="fs-6 d-inline"><a hx-get="/movie" hx-target="#main" hx-swap="innerHTML" hx-trigger="click" style="cursor: pointer;">Movie</a></h1>
+			<h1 class="fs-6 d-inline"><a hx-get="/category" hx-target="#main" hx-swap="innerHTML" hx-trigger="click" style="cursor: pointer;">Category</a></h1>
 			<h1 class="fs-6 d-inline"><a hx-get="/director" hx-target="#main" hx-swap="innerHTML" hx-trigger="click" style="cursor: pointer;">Director</a></h1>
 		</div>
 		<nav class="main">
