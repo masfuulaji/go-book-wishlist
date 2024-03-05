@@ -19,7 +19,7 @@ templ Form(data response.DirectorResponse) {
 				</div>
 				<div class="mb-3">
 					<label for="birthday" class="form-label">Birthday</label>
-					<input type="text" class="form-control" id="birthday" name="birthday" value={ data.Birthday.Format("02-01-2006") }/>
+					<input type="date" class="form-control" id="birthday" name="birthday" value={ data.Birthday.Format("2006-01-02") }/>
 				</div>
 				<div class="mb-3">
 					<label for="place_of_birth" class="form-label">Place of Birth</label>

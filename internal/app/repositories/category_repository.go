@@ -25,7 +25,7 @@ func NewCategoryRepository(db *sqlx.DB) *CategoryRepositoryImpl {
 }
 
 func (cr *CategoryRepositoryImpl) CreateCategory(category *request.CategoryRequest) error {
-	query := "INSERT INTO categories (name, description, created_at, updated_at) VALUES ($1, $2)"
+	query := "INSERT INTO categories (name, description, created_at, updated_at) VALUES ($1, $2, $3, $4)"
 	createdAt := time.Now().Format("2006-01-02 15:04:05")
 	updatedAt := time.Now().Format("2006-01-02 15:04:05")
 
@@ -62,7 +62,7 @@ func (cr *CategoryRepositoryImpl) GetCategory(id string) (models.Category, error
 }
 
 func (cr *CategoryRepositoryImpl) UpdateCategory(id string, category *request.CategoryRequest) error {
-	query := "UPDATE categories SET name = $1, description = $2, updated_at = $3 WHERE id = $3"
+	query := "UPDATE categories SET name = $1, description = $2, updated_at = $3 WHERE id = $4"
 	updatedAt := time.Now().Format("2006-01-02 15:04:05")
 
 	_, err := cr.db.Exec(query, category.Name, category.Description, updatedAt, id)

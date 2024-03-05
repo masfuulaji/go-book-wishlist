@@ -83,7 +83,7 @@ func (h *directorHandlerImpl) StoreDirector(c echo.Context) error {
 		}
 	}
 
-	parseBirday, err := time.Parse("02-01-2006", birthday)
+	parseBirday, err := time.Parse("2006-01-02", birthday)
 	if err != nil {
 		return c.String(http.StatusNotFound, err.Error())
 	}
