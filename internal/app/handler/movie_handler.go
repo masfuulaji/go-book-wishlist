@@ -21,11 +21,12 @@ type MovieHandler interface {
 }
 
 type movieHandlerImpl struct {
-	MovieRepository *repositories.MovieRepositoryImpl
+	MovieRepository    *repositories.MovieRepositoryImpl
+	CategoryRepository *repositories.CategoryRepositoryImpl
 }
 
 func NewMovieHandler(db *sqlx.DB) *movieHandlerImpl {
-	return &movieHandlerImpl{MovieRepository: repositories.NewMovieRepository(db)}
+	return &movieHandlerImpl{MovieRepository: repositories.NewMovieRepository(db), CategoryRepository: repositories.NewCategoryRepository(db)}
 }
 
 func (h *movieHandlerImpl) PageMovie(c echo.Context) error {
@@ -62,11 +63,25 @@ func (h *movieHandlerImpl) EditMovie(c echo.Context) error {
 	res.Title = data.Title
 	res.Description = data.Description
 	res.Year = data.Year
-	return movie.Form(res).Render(c.Request().Context(), c.Response())
+	return movie.Form(res, []response.CategoryResponse{}).Render(c.Request().Context(), c.Response())
 }
 
 func (h *movieHandlerImpl) NewMovie(c echo.Context) error {
-	return movie.Form(response.MovieResponse{}).Render(c.Request().Context(), c.Response())
+	categories, err := h.CategoryRepository.GetCategories()
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+
+	var resCategory []response.CategoryResponse
+
+	for _, category := range categories {
+		resCategory = append(resCategory, response.CategoryResponse{
+			ID:          category.ID,
+			Name:        category.Name,
+			Description: category.Description,
+		})
+	}
+	return movie.Form(response.MovieResponse{}, resCategory).Render(c.Request().Context(), c.Response())
 }
 
 func (h *movieHandlerImpl) StoreMovie(c echo.Context) error {

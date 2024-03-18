@@ -3,7 +3,7 @@ package movie
 import "github.com/masfuulaji/go-book-wishlist/internal/app/response"
 import "strconv"
 
-templ Form(data response.MovieResponse) {
+templ Form(data response.MovieResponse, categories []response.CategoryResponse) {
 	<div class="m-5 p-3">
 		<h1 class="fs-5 fw-bold">Movie</h1>
 		<div class="card p-4">
@@ -22,6 +22,15 @@ templ Form(data response.MovieResponse) {
 					<input type="text" class="form-control" id="description" name="description" value={ data.Description }/>
 				</div>
 				<div class="mb-3">
+					<label for="category" class="form-label">Category</label>
+					<select id="category-select" class="form-select" name="category" aria-label="Default select example">
+						<option selected>Open this select menu</option>
+						for _, category := range categories {
+							<option value={ strconv.Itoa(category.ID )}>{ category.Name }</option>
+						}
+					</select>
+				</div>
+				<div class="mb-3">
 					<label for="year" class="form-label">Year</label>
 					<input type="text" class="form-control" id="year" name="year" value={ data.Year }/>
 				</div>
@@ -30,4 +39,9 @@ templ Form(data response.MovieResponse) {
 			</form>
 		</div>
 	</div>
+	<script>
+	$(document).ready(function() {
+		$('#category-select').select2();
+	});
+	</script>
 }
