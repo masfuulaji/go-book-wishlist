@@ -8,14 +8,6 @@ import (
 	"github.com/masfuulaji/go-book-wishlist/internal/app/request"
 )
 
-type movieRepository interface {
-	CreateMovie(movie *models.Movie) error
-	GetMovies() ([]models.Movie, error)
-	GetMovie(id string) (models.Movie, error)
-	UpdateMovie(id string, movie *models.Movie) error
-	DeleteMovie(id string) error
-}
-
 type MovieRepositoryImpl struct {
 	db *sqlx.DB
 }

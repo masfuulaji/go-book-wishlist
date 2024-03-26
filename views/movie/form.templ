@@ -1,9 +1,10 @@
 package movie
 
 import "github.com/masfuulaji/go-book-wishlist/internal/app/response"
+import "github.com/masfuulaji/go-book-wishlist/internal/utils"
 import "strconv"
 
-templ Form(data response.MovieResponse, categories []response.CategoryResponse) {
+templ Form(data response.MovieResponse, categories []response.CategoryResponse, directors []response.DirectorResponse) {
 	<div class="m-5 p-3">
 		<h1 class="fs-5 fw-bold">Movie</h1>
 		<div class="card p-4">
@@ -34,6 +35,15 @@ templ Form(data response.MovieResponse, categories []response.CategoryResponse) 
 					<label for="year" class="form-label">Year</label>
 					<input type="text" class="form-control" id="year" name="year" value={ data.Year }/>
 				</div>
+				<div class="mb-3">
+					<label for="director" class="form-label">Director</label>
+					<select id="director-select" class="form-select" name="director" aria-label="Default select example">
+						<option selected>Open this select menu</option>
+						for _, director := range directors {
+							<option value={ strconv.Itoa(director.ID )} selected?={ utils.SelectValueIf((director.ID == data.DirectorID), true, false) }>{ director.Name }</option>
+						}
+					</select>
+				</div>
 				<button hx-get="/movie" hx-target="#main" hx-swap="innerHTML" class="btn btn-secondary">Cancel</button>
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
@@ -42,6 +52,7 @@ templ Form(data response.MovieResponse, categories []response.CategoryResponse) 
 	<script>
 	$(document).ready(function() {
 		$('#category-select').select2();
+		$('#director-select').select2();
 	});
 	</script>
 }

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/lib/pq"
@@ -15,5 +16,5 @@ type Movie struct {
 	Year        string
 	DirectorID  int `db:"director_id"`
 	ID          int
-	Rating      float32
+	Rating      sql.NullFloat64
 }

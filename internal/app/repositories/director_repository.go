@@ -8,16 +8,6 @@ import (
 	"github.com/masfuulaji/go-book-wishlist/internal/app/request"
 )
 
-var director models.Director
-
-type DirectorRepository interface {
-	CreateDirector(director *models.Director) error
-	GetDirectors() ([]models.Director, error)
-	GetDirector(id string) (models.Director, error)
-	UpdateDirector(id string, director *models.Director) error
-	DeleteDirector(id string) error
-}
-
 type DirectorRepositoryImpl struct {
 	db *sqlx.DB
 }

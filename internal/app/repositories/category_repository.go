@@ -8,14 +8,6 @@ import (
 	"github.com/masfuulaji/go-book-wishlist/internal/app/request"
 )
 
-type CategoryRepository interface {
-	CreateCategory(category *models.Category) error
-	GetCategories() ([]models.Category, error)
-	GetCategory(id string) (models.Category, error)
-	UpdateCategory(id string, category *models.Category) error
-	DeleteCategory(id string) error
-}
-
 type CategoryRepositoryImpl struct {
 	db *sqlx.DB
 }

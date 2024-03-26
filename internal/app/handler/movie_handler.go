@@ -23,10 +23,15 @@ type MovieHandler interface {
 type movieHandlerImpl struct {
 	MovieRepository    *repositories.MovieRepositoryImpl
 	CategoryRepository *repositories.CategoryRepositoryImpl
+	DirectorRepository *repositories.DirectorRepositoryImpl
 }
 
 func NewMovieHandler(db *sqlx.DB) *movieHandlerImpl {
-	return &movieHandlerImpl{MovieRepository: repositories.NewMovieRepository(db), CategoryRepository: repositories.NewCategoryRepository(db)}
+	return &movieHandlerImpl{
+		MovieRepository:    repositories.NewMovieRepository(db),
+		CategoryRepository: repositories.NewCategoryRepository(db),
+		DirectorRepository: repositories.NewDirectorRepository(db),
+	}
 }
 
 func (h *movieHandlerImpl) PageMovie(c echo.Context) error {
@@ -63,7 +68,38 @@ func (h *movieHandlerImpl) EditMovie(c echo.Context) error {
 	res.Title = data.Title
 	res.Description = data.Description
 	res.Year = data.Year
-	return movie.Form(res, []response.CategoryResponse{}).Render(c.Request().Context(), c.Response())
+	res.DirectorID = data.DirectorID
+
+	categories, err := h.CategoryRepository.GetCategories()
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+
+	var resCategory []response.CategoryResponse
+
+	for _, category := range categories {
+		resCategory = append(resCategory, response.CategoryResponse{
+			ID:          category.ID,
+			Name:        category.Name,
+			Description: category.Description,
+		})
+	}
+
+	directors, err := h.DirectorRepository.GetDirectors()
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+
+	var resDirector []response.DirectorResponse
+
+	for _, director := range directors {
+		resDirector = append(resDirector, response.DirectorResponse{
+			ID:           director.ID,
+			Name:         director.Name,
+			PlaceOfBirth: director.PlaceOfBirth,
+		})
+	}
+	return movie.Form(res, resCategory, resDirector).Render(c.Request().Context(), c.Response())
 }
 
 func (h *movieHandlerImpl) NewMovie(c echo.Context) error {
@@ -81,7 +117,22 @@ func (h *movieHandlerImpl) NewMovie(c echo.Context) error {
 			Description: category.Description,
 		})
 	}
-	return movie.Form(response.MovieResponse{}, resCategory).Render(c.Request().Context(), c.Response())
+
+	directors, err := h.DirectorRepository.GetDirectors()
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+
+	var resDirector []response.DirectorResponse
+
+	for _, director := range directors {
+		resDirector = append(resDirector, response.DirectorResponse{
+			ID:           director.ID,
+			Name:         director.Name,
+			PlaceOfBirth: director.PlaceOfBirth,
+		})
+	}
+	return movie.Form(response.MovieResponse{}, resCategory, resDirector).Render(c.Request().Context(), c.Response())
 }
 
 func (h *movieHandlerImpl) StoreMovie(c echo.Context) error {
@@ -89,6 +140,7 @@ func (h *movieHandlerImpl) StoreMovie(c echo.Context) error {
 	title := c.FormValue("title")
 	description := c.FormValue("description")
 	year := c.FormValue("year")
+	director := c.FormValue("director")
 
 	intID := 0
 	if id != "" {
@@ -99,11 +151,17 @@ func (h *movieHandlerImpl) StoreMovie(c echo.Context) error {
 		}
 	}
 
+	intDirector, err := strconv.Atoi(director)
+	if err != nil {
+		return c.String(http.StatusNotFound, err.Error())
+	}
+
 	movie := &request.MovieRequest{
 		ID:          intID,
 		Title:       title,
 		Description: description,
 		Year:        year,
+		DirectorID:  intDirector,
 	}
 
 	if id == "" {
